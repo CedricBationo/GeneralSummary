@@ -9,7 +9,7 @@ For the development version from GitHub:
 ```r
 # install.packages("devtools")
 devtools::install_github("CedricBationo/GeneralSummary")
-
+```
 ## Usage
 
 ```r
@@ -17,3 +17,4 @@ library(GeneralSummary)
 
 # Example usage:
 
+```

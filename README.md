@@ -24,21 +24,30 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
 - `weights_var (optional)`: The name of the weights variable. Default is `NULL`.
 - `multiple_choice (optional)`: A logical value indicating whether the variable is multiple choice. Default is `FALSE`.
 - `variable_type (optional)`: The type of the variable (binary, continuous, or other). Default is `binary`.
-
 ## Function Behavior
 
-The behavior of the `general_summary` function differs based on the `variable_type` and `multiple_choice` arguments:
+The `general_summary` function operates differently based on the `variable_type` and `multiple_choice` arguments, adapting its behavior to the nature of the variables being analyzed. Here's a detailed breakdown of how the function handles different types of variables and the specific summary statistics it computes:
 
- 1. Multiple Choice Variables:
- - If `multiple_choice` is `TRUE`, the function calculates the mean and confidence interval for each choice in the multiple choice variable.
- - The data is first reshaped to long format, then grouped by the specified `group_vars` and the choices in the multiple choice variable.
- - The mean and confidence interval are then calculated for each group.
- 2. Continuous Variables  
- - For continuous variables, the function first tests for normality using the `Shapiro-Wilk test`.
- - If the data is normally distributed, the mean and confidence interval are calculated.
- - If the data is not normally distributed, the median and interquartile range are calculated.
- 3. Binary Variables:
- - For binary variables, the function calculates the mean and confidence interval.
+### 1. **Multiple Choice Variables**:
+   - When `multiple_choice` is set to `TRUE`, the function computes:
+     - **Weighted Mean:** The weighted mean of each choice within the multiple choice variable.
+     - **Wilson's Interval for 95% CI:** Utilizing the `prop.test` function in R, the function computes Wilson's interval for a 95% Confidence Interval (CI) for each choice within the multiple choice variable.
+   - Initially, the data is converted into a long format, followed by grouping based on the designated `group_vars` along with the choices from the multiple choice variable.
+   - Post grouping, the weighted mean and Wilson's interval are computed for each group.
+
+### 2. **Continuous Variables**:
+   - A normality check is performed using the `Shapiro-Wilk test`.
+   - **If the data is found to be normally distributed**:
+     - **Weighted Mean:** The weighted mean of the variable is calculated.
+     - **95% CI:** A 95% Confidence Interval (CI) is derived using Logit regression, facilitated by the `lm` function in R.
+   - **If the data is found to be non-normally distributed**:
+     - **Weighted Median:** The weighted median of the variable is computed.
+     - **IQR:** The Interquartile Range (IQR) of the variable is calculated.
+
+### 3. **Binary Variables**:
+   - For binary variables, the following summary statistics are computed:
+     - **Weighted Mean:** The weighted mean of the binary variable is calculated.
+     - **Wilson's Interval for 95% CI:** Utilizing the `prop.test` function in R, the function computes Wilson's interval for a 95% Confidence Interval (CI).
 
 ## Data Preparation Guidelines
 

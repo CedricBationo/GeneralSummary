@@ -18,3 +18,11 @@ library(GeneralSummary)
 # Example usage:
 
 ```
+##  Authors
+
+   - Cédric Bationo (cbationo@worldbank.org)
+   - Khushboo Gupta (kgupta6@worldbank.org)
+   - Harish Saï (hramsai@worldbank.org)
+
+## License
+GPL-3

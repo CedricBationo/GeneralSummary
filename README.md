@@ -16,6 +16,7 @@ library(GeneralSummary)
 ```r
 general_summary <- function(data, variable, group_vars = NULL, weights_var = NULL, multiple_choice = FALSE, variable_type = "binary")
 ```
+
 ## Arguments
 - `data`: The data frame containing the data.
 - `variable`: The name of the variable for which the summary statistics will be calculated.

@@ -20,10 +20,10 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
 ## Arguments
 - `data`: The data frame containing the data.
 - `variable`: The name of the variable for which the summary statistics will be calculated.
-- `group_vars (optional)`: A vector of grouping variables. Default is NULL.
-- `weights_var (optional)`: The name of the weights variable. Default is NULL.
-- `multiple_choice (optional)`: A logical value indicating whether the variable is multiple choice. Default is FALSE.
-- `variable_type (optional)`: The type of the variable (binary, continuous, or other). Default is "binary".
+- `group_vars (optional)`: A vector of grouping variables. Default is `NULL`.
+- `weights_var (optional)`: The name of the weights variable. Default is `NULL`.
+- `multiple_choice (optional)`: A logical value indicating whether the variable is multiple choice. Default is `FALSE`.
+- `variable_type (optional)`: The type of the variable (binary, continuous, or other). Default is `binary`.
 
 ## Function Behavior
 

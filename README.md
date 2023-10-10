@@ -41,13 +41,25 @@ The behavior of the `general_summary` function differs based on the `variable_ty
  - For binary variables, the function calculates the mean and confidence interval.
         
 ## Usage
-
+### Binary Variable Example
 ```r
-
-
-## Example usage:
+# Assuming df is your data frame
+summary_results <- general_summary(df, 'binary_variable', c('group_var1', 'group_var2'), 'weights_var')
+```
+### Continuous Variable Example
+```r
+# Assuming df is your data frame
+summary_results <- general_summary(df, 'continuous_variable', c('group_var1', 'group_var2'), 'weights_var', FALSE, 'continuous')
 
 ```
+### Multiple Choice Variable Example
+```r
+# Assuming df is your data frame
+summary_results <- general_summary(df, 'multiple_choice_variable', c('group_var1', 'group_var2'), 'weights_var', TRUE)
+
+
+```
+
 ##  Authors
 
    - Cédric Bationo (cbationo@worldbank.org)

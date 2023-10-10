@@ -8,9 +8,4 @@ For the development version from GitHub:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("your_username/GeneralSummary")
-library(GeneralSummary)
-
-# Example usage:
-# Assuming df is your data frame and vars is a vector of variable names
-summary_results <- general_summary(df, vars)
+devtools::install_github("CedricBationo/GeneralSummary")

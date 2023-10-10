@@ -26,7 +26,7 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
 
 ## Function Behavior
 
-The behavior of the `general_summary` function differs based on the variable_type and multiple_choice arguments:
+The behavior of the `general_summary` function differs based on the `variable_type` and `multiple_choice` arguments:
 
  1. Multiple Choice Variables:
  - If `multiple_choice` is `TRUE`, the function calculates the mean and confidence interval for each choice in the multiple choice variable.

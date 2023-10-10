@@ -28,17 +28,15 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
 
 The behavior of the `general_summary` function differs based on the variable_type and multiple_choice arguments:
 
-    1. Multiple Choice Variables:
+ 1. Multiple Choice Variables:
         - If multiple_choice is TRUE, the function calculates the mean and confidence interval for each choice in the multiple choice variable.
         - The data is first reshaped to long format, then grouped by the specified group_vars and the choices in the multiple choice variable.
         - The mean and confidence interval are then calculated for each group.
-
-    2. Continuous Variables:
+2. Continuous Variables:
         - For continuous variables, the function first tests for normality using the Shapiro-Wilk test.
         - If the data is normally distributed, the mean and confidence interval are calculated.
         - If the data is not normally distributed, the median and interquartile range are calculated.
-
-    3. Binary Variables:
+3. Binary Variables:
         For binary variables, the function calculates the mean and confidence interval.
         
 ## Usage

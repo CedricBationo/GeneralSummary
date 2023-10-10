@@ -17,26 +17,26 @@ library(GeneralSummary)
 general_summary <- function(data, variable, group_vars = NULL, weights_var = NULL, multiple_choice = FALSE, variable_type = "binary")
 ```
 ## Arguments
-    -`data`: The data frame containing the data.
-    -`variable`: The name of the variable for which the summary statistics will be calculated.
-    -`group_vars (optional)`: A vector of grouping variables. Default is NULL.
-    -`weights_var (optional)`: The name of the weights variable. Default is NULL.
-    -`multiple_choice (optional)`: A logical value indicating whether the variable is multiple choice. Default is FALSE.
-    -`variable_type (optional)`: The type of the variable (binary, continuous, or other). Default is "binary".
+    - `data`: The data frame containing the data.
+    - `variable`: The name of the variable for which the summary statistics will be calculated.
+    - `group_vars (optional)`: A vector of grouping variables. Default is NULL.
+    - `weights_var (optional)`: The name of the weights variable. Default is NULL.
+    - `multiple_choice (optional)`: A logical value indicating whether the variable is multiple choice. Default is FALSE.
+    - `variable_type (optional)`: The type of the variable (binary, continuous, or other). Default is "binary".
 
 ## Function Behavior
 
 The behavior of the `general_summary` function differs based on the variable_type and multiple_choice arguments:
 
     1. Multiple Choice Variables:
-        -If multiple_choice is TRUE, the function calculates the mean and confidence interval for each choice in the multiple choice variable.
-        -The data is first reshaped to long format, then grouped by the specified group_vars and the choices in the multiple choice variable.
-        -The mean and confidence interval are then calculated for each group.
+        - If multiple_choice is TRUE, the function calculates the mean and confidence interval for each choice in the multiple choice variable.
+        - The data is first reshaped to long format, then grouped by the specified group_vars and the choices in the multiple choice variable.
+        - The mean and confidence interval are then calculated for each group.
 
     2. Continuous Variables:
-        -For continuous variables, the function first tests for normality using the Shapiro-Wilk test.
-        -If the data is normally distributed, the mean and confidence interval are calculated.
-        -If the data is not normally distributed, the median and interquartile range are calculated.
+        - For continuous variables, the function first tests for normality using the Shapiro-Wilk test.
+        - If the data is normally distributed, the mean and confidence interval are calculated.
+        - If the data is not normally distributed, the median and interquartile range are calculated.
 
     3. Binary Variables:
         For binary variables, the function calculates the mean and confidence interval.

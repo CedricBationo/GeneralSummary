@@ -47,20 +47,20 @@ Follow the steps outlined below for each indicator to ensure the data is correct
 ### **Data Cleaning and Setup**
    Begin by cleaning the specified variables and setting up a dedicated dataframe for analysis.
 
-    ### a. Binary Variables:
-        i. Convert the variable into a boolean (True/False) or a dummy variable (1/0) as required.
-        ii. Treat 'Don't Know', 'NA', and other such responses as instructed in the `feedback_clarifications.xlsx` file.
+### Binary Variables:
+- Convert the variable into a boolean (True/False) or a dummy variable (1/0) as required.
+- Treat 'Don't Know', 'NA', and other such responses as instructed in the `feedback_clarifications.xlsx` file.
 
-    ### b. Continuous Variables:
-        i. If dealing with numeric variables, employ the following command to ensure correct datatype conversion:
-           ```R
-           mutate(as.numeric(as.character()))
-           ```
-           > Note: Numeric values may import differently from STATA.
-        ii. Address 'NA', 'Don't Know', and 'refuse' responses as per the instructions in the `feedback_clarifications.xlsx` file.
+### Continuous Variables:
+- If dealing with numeric variables, employ the following command to ensure correct datatype conversion:
+ ```r
+mutate(as.numeric(as.character()))
+ ```
+* Note: Numeric values may import differently from STATA.
+- Address 'NA', 'Don't Know', and 'refuse' responses as per the instructions in the `feedback_clarifications.xlsx` file.
 
-    ### c. Multiple Choice Variables:
-        i. Assemble a list of Multiple Choice Questions (MCQ) variables in advance for processing through the function argument.
+###  Multiple Choice Variables:
+- Assemble a list of Multiple Choice Questions (MCQ) variables in advance for processing through the function argument.
 
 
         

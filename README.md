@@ -7,7 +7,7 @@
 For the development version from GitHub:
 
 ```r
-# install.packages("devtools")
+install.packages("devtools")
 devtools::install_github("CedricBationo/GeneralSummary")
 library(GeneralSummary)
 ```

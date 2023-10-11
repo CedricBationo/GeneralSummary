@@ -90,14 +90,7 @@ summary_results <- general_summary(df, 'continuous_variable', c('group_var1', 'g
 # Assuming df is your data frame
 summary_results <- general_summary(df, 'multiple_choice_variable', c('group_var1', 'group_var2'), 'weights_var', TRUE)
 
-
 ```
-
-##  Authors
-
-   - Cédric Bationo (cbationo@worldbank.org)
-   - Khushboo Gupta (kgupta6@worldbank.org)
-   - Harish Saï (hramsai@worldbank.org)
 
 ## License
 GPL-3

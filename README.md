@@ -24,6 +24,8 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
 - `weights_var (optional)`: The name of the weights variable. Default is `NULL`.
 - `multiple_choice (optional)`: A logical value indicating whether the variable is multiple choice. Default is `FALSE`.
 - `variable_type`: The type of the variable (binary, continuous, or multiple choice). Default is `binary`.
+- `coerce_mean`: A logical indicating whether the mean should be calculated (even if data are not normally distributed). Overrides the Shapiro-Wilk test check done internally. Default is `FALSE`.
+  
 ## Function Behavior
 
 The `general_summary` function operates differently based on the `variable_type` and `multiple_choice` arguments, adapting its behavior to the nature of the variables being analyzed. Here's a detailed breakdown of how the function handles different types of variables and the specific summary statistics it computes:

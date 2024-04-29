@@ -10,7 +10,8 @@
 #' @param multiple_choice A logical indicating whether the variable is a multiple choice variable. Default is FALSE.
 #' @param variable_type The type of the variable: "binary", "continuous", "categorical" or other. Default is "binary".
 #' @param CI  A logical indicating whether CI/ IQR need to be calculated or not. Default is TRUE.
-#' @param coerce_mean  A logical indicating whether the mean should be calculated (even if data are not normally distributed). Overrides the Shapiro-Wilk test check done internally. Default is FALSE
+#' @param coerce_mean  A logical indicating whether the mean should be calculated (even if data are not normally distributed for continuous variables only). Overrides the Shapiro-Wilk test check done internally. Default is FALSE
+#' @param coerce_median A logical indicating whether the median should be calculated for continuous variables only. Overrides the Shapiro-Wilk test check done internally. Default is FALSE
 #'
 #' @return A data frame containing the summary.
 #'
@@ -26,8 +27,9 @@
 #' @importFrom stats IQR as.formula confint lm prop.test shapiro.test weighted.mean
 #' @importFrom broom tidy
 
-general_summary <- function(data, variable, group_vars = NULL, weights_var = NULL, multiple_choice = FALSE, variable_type = "binary", CI = TRUE, coerce_mean = FALSE) {
+general_summary <- function(data, variable, group_vars = NULL, weights_var = NULL, multiple_choice = FALSE, variable_type = "binary", CI = TRUE, coerce_mean = FALSE, coerce_median = FALSE) {
 
+    if( sum( is.na( data[[ weights_var ]] ) ) > 0 ) warning( "NAs detected in weights variable. Output may be affected. Consider removing all rows with NAs in weights variable before running this command." )
 
     if(CI) {
         if (multiple_choice) {
@@ -67,7 +69,7 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
         } else if (variable_type == "continuous") {
             shapiro_test <- shapiro.test(data[[variable]])
 
-            if (shapiro_test$p.value > 0.05 | coerce_mean == TRUE ) {
+            if ( ( shapiro_test$p.value > 0.05 | coerce_mean ) & !coerce_median ) {
                 message("Continuous - Normally Distributed - Calculating mean and CI")
 
                 calc_lm_ci <- function(df, weights_expr) {
@@ -89,7 +91,7 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
 
                 } }
 
-            else if (shapiro_test$p.value < 0.05 & coerce_mean == FALSE)  {
+            else if ( ( shapiro_test$p.value < 0.05 & !coerce_mean ) | coerce_median ) {
                 message("Continuous - non normally distributed - calculating median and quartiles")
                 if (!is.null(group_vars)) {
                     data_grouped <- data %>%
@@ -219,21 +221,49 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
                 )
 
         } else if (variable_type == "continuous") {
-            shapiro_test <- shapiro.test(data[[variable]])
 
-            if (shapiro_test$p.value > 0.05) {
-                message("Continuous - Normally Distributed - Calculating mean")
+            if( !coerce_median ){
+                shapiro_test <- shapiro.test(data[[variable]])
 
-                if (!is.null(group_vars)) {
-                    data_grouped <- data %>%
-                        group_by(!!!syms(group_vars)) %>%
+                if (shapiro_test$p.value > 0.05) {
+                    message("Continuous - Normally Distributed - Calculating mean")
+
+                    if (!is.null(group_vars)) {
+                        data_grouped <- data %>%
+                            group_by(!!!syms(group_vars)) %>%
+                            summary_stat = weighted.mean(df[[variable]], weights_var, na.rm = TRUE)
+                    } else {
                         summary_stat = weighted.mean(df[[variable]], weights_var, na.rm = TRUE)
-                } else {
-                    summary_stat = weighted.mean(df[[variable]], weights_var, na.rm = TRUE)
 
-                } }
+                    } }
 
-            else if (shapiro_test$p.value < 0.05)  {
+                else if( (shapiro_test$p.value < 0.05 & !coerce_mean ) ) {
+                    message("Continuous - non normally distributed - calculating median and quartiles")
+                    if (!is.null(group_vars)) {
+                        data_grouped <- data %>%
+                            group_by(!!!syms(group_vars)) %>%
+                            summarise(
+                                summary_stat = weighted.median(!!sym(variable), !!sym(weights_var)),
+                                q2 = wtd.quantile(!!sym(variable), weights = !!sym(weights_var), probs = 0.50, na.rm = TRUE),
+                                q1 = wtd.quantile(!!sym(variable), weights = !!sym(weights_var), probs = 0.25, na.rm = TRUE),
+                                q3 = wtd.quantile(!!sym(variable), weights = !!sym(weights_var), probs = 0.75, na.rm = TRUE)
+                            )
+
+                    } else {
+
+                        data_grouped <- data %>%
+                            summarise(
+                                summary_stat = weighted.median(!!sym(variable), !!sym(weights_var)),
+                                q2 = wtd.quantile(!!sym(variable), weights = !!sym(weights_var), probs = 0.50, na.rm = TRUE),
+                                q1 = wtd.quantile(!!sym(variable), weights = !!sym(weights_var), probs = 0.25, na.rm = TRUE),
+                                q3 = wtd.quantile(!!sym(variable), weights = !!sym(weights_var), probs = 0.75, na.rm = TRUE)
+
+                            )
+                    }}
+
+            }
+
+            else if( coerce_median ) {
                 message("Continuous - non normally distributed - calculating median and quartiles")
                 if (!is.null(group_vars)) {
                     data_grouped <- data %>%
@@ -255,7 +285,9 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
                             q3 = wtd.quantile(!!sym(variable), weights = !!sym(weights_var), probs = 0.75, na.rm = TRUE)
 
                         )
-                }}}
+                }}
+
+        }
 
         else if (variable_type == "binary") {
             message("Binary - calculating mean")

@@ -69,7 +69,7 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
         } else if (variable_type == "continuous") {
             shapiro_test <- shapiro.test(data[[variable]])
 
-            if ( ( shapiro_test$p.value > 0.05 | coerce_mean ) & !coerce_median ) {
+            if ( ( shapiro_test$p.value >= 0.05 | coerce_mean ) & !coerce_median ) {
                 message("Continuous - Normally Distributed - Calculating mean and CI")
 
                 calc_lm_ci <- function(df, weights_expr) {
@@ -211,7 +211,12 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
                 group_columns <- c(group_vars, "reason")
             }
 
-            message("Multiple choice - calculating Mean")
+            shapiro_test <- shapiro.test(data[[variable]])
+
+
+            if( shapiro_test$p.value >= 0.05 | coerce_mean ) {
+
+            message("Multiple choice - Continuous - calculating mean (normally distributed or coerced")
 
             data_grouped <- data_long %>%
                 group_by(across(all_of(group_columns))) %>%
@@ -219,13 +224,31 @@ general_summary <- function(data, variable, group_vars = NULL, weights_var = NUL
                     mean_value = weighted.mean(value, !!sym(weights_var), na.rm = TRUE) * 100,
                     .groups = "drop"
                 )
+            }
+
+            if( shapiro_test$p.value < 0.05 | coerce_median ) {
+
+                message("Multiple choice - Continuous - calculating median (non-normally distributed or coerced")
+
+                data_grouped <- data_long %>%
+                    group_by(across(all_of(group_columns))) %>%
+                    summarise(
+                        summary_stat = weighted.median(value, !!sym(weights_var)),
+
+                        q2 = wtd.quantile(value, weights = !!sym(weights_var), probs = 0.50, na.rm = TRUE),
+                        q1 = wtd.quantile(value, weights = !!sym(weights_var), probs = 0.25, na.rm = TRUE),
+                        q3 = wtd.quantile(value, weights = !!sym(weights_var), probs = 0.75, na.rm = TRUE),
+                        .groups = "drop"
+                    )
+            }
+
 
         } else if (variable_type == "continuous") {
 
             if( !coerce_median ){
                 shapiro_test <- shapiro.test(data[[variable]])
 
-                if (shapiro_test$p.value > 0.05) {
+                if (shapiro_test$p.value >= 0.05) {
                     message("Continuous - Normally Distributed - Calculating mean")
 
                     if (!is.null(group_vars)) {

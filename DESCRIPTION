@@ -1,16 +1,32 @@
-Package: GeneralSummary
+Package: generalSummary
 Type: Package
-Title: A Package for Generating Summary Statistics
-Version: 0.1.0
-Description: The GeneralSummary package provides a function to generate summary statistics for various types of data.
-    The main function, general_summary, can handle multiple choice, continuous, and binary variables, providing means,
-    medians, confidence intervals, and interquartile ranges as appropriate.
-License: GPL-3
+Title: General Summary Functions for Survey and Weighted Data
+Version: 1.2.0
+Authors@R: 
+    c(
+      person("Cedric Stephane", "Bationo", 
+             email = "bationocedricstephane@live.fr", 
+             role = c("aut", "cre")),
+      person("Christian", "Maino Vieytes", role = "aut"),
+      person("Joseph", "Millward", role = "aut"),
+      person("Khushboo", "Gupta", role = "aut")
+    )
+Description: Provides a unified interface to summarize survey or weighted data, supporting binary, continuous, categorical, and multiple-choice variables. 
+    Built on top of the 'survey' and 'Hmisc' packages, it includes robust handling of complex survey designs, weighted summaries, and confidence intervals or quantile-based summaries.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
-Imports: 
-    broom,
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports:
+    survey,
     dplyr,
-    tidyr
-
+    tidyr,
+    Hmisc,
+    stats
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown
+Depends:
+    R (>= 3.6)

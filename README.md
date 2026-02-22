@@ -12,6 +12,8 @@ devtools::install_github("CedricBationo/GeneralSummary")
 library(generalSummary)
 ```
 
+***Note:*** *This function requires installation of the following packages - all available using the install.packages() command in R: survey, dplyr, tidyr, stats, and Hmisc*
+
 ## Function Signature
 
 ```r
@@ -34,7 +36,7 @@ general_summary<- function(
 
 - `data`: The data frame containing the data.
 - `variable`: The name of the variable (or vector of variable names for multiple choice) for which the summary statistics will be calculated.
-- `group_vars (optional)`: A vector of grouping variables (Region, Health facilities, etc...). Default is `NULL`.
+- `group_vars (optional)`: A vector of grouping variables (Region, Health facilities, respondent sex, etc...). Default is `NULL`.
 - `weights_var (optional)`: The name of the weights variable. Default is `NULL`.
 - `strata_var (optional)`: The name of the stratification variable for the survey design. Default is `NULL`.
 - `id_var (optional)`: The name of the cluster (PSU) ID variable. Default is `NULL`.
